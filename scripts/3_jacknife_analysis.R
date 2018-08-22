@@ -1,23 +1,19 @@
-#!/bin/env Rscript
-# rm(list=ls())
-# setwd('/Users/robins64/Documents/git_repos/seychelles-benthos')
+rm(list=ls())
+
 
 library(rethinking)
-library(dplyr)
-library(stringr)
-library(tidyr)
-source('plot-cor-functions.R')
-source('scaling_function.R')
+library(here)
+setwd(here())
 
-## read in predicted recovery years
-load('data/bayes_predicted_recovery_time.Rdata'); rates<-base
-rates$baseline.minus<-NULL; rates$baseline.plus<-NULL
+source('scripts/scaling_function.R')
 
+## read in predicted recovery years, rename 'base' to rates
+load('data/recovery_trajectory.Rdata'); rates<-base
 
-## add predictors
+## load reef-scale predictors (not uploaded - can be provided by request to the authors)
 load(file='data/recovery_predictors_clean.Rdata')
-pred$Region<-gsub('_', ' ', pred$Region)
 
+## match in reef predictors to recovery year dataframe
 rates$Herb_biomass<-pred$Herb_biomass[match(rates$location, pred$Region)]
 rates$Depth<-pred$Depth[match(rates$location, pred$Region)]
 rates$Init_complex<-pred$Init_complex[match(rates$location, pred$Region)]
@@ -28,17 +24,18 @@ rates$Sea_urchin_m2_2008<-pred$Sea_urchin_m2_2008[match(rates$location, pred$Reg
 rates$Coral_Juv_dens<-pred$Coral_Juv_dens[match(rates$location, pred$Region)]
 rates$Manage<-pred$Manage[match(rates$location, pred$Region)]
 
-rates<-data.frame(rates)
-
+## strip dots for rethinking model
 colnames(rates)[colnames(rates)=='recovery.year']<-'recoveryyear'
 
 ## change recovery year to real time
 rates$recoveryyear<-rates$recoveryyear+6
 
-## setup post list for saving posterior distributions
-post.list<-numeric()
 
-pdf(file='results/jacknife/recovery_diagnostic_jackknife.pdf', height=12, width=12)
+pdf(file='figures/recovery_diagnostic_jackknife.pdf', height=12, width=12)
+
+## Loop through dataset with one data point removed each iteration
+# fit linear model predicting recovery year
+# save model and posteriors
 
 for(i in 1:12){
 
@@ -75,18 +72,15 @@ for(i in 1:12){
 	## extract posteriors
 	post<-extract.samples(m, n = 1000)
 
-	save(m, scaled, post, file=paste('results/jacknife/jacknife', i, '.Rdata'))
+	save(m, scaled, post, file=paste('data/jacknife', i, '.Rdata'))
 
 	## inspect param estimates
 	plot(precis(m, depth=2), main=paste('jacknife_', i))
-
-	## add posteriors to master list
-	post.list[[paste0("jack", i)]] <- post
 
 }
 
 dev.off()
 
 
-save(post.list, file='results/jacknife/jacknife_posts.Rdata')
+
 

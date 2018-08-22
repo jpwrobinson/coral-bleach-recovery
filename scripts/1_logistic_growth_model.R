@@ -5,10 +5,12 @@ library(tidyverse)
 library(here)
 
 setwd(here())
-## function to scale and center continuous predictors (and dummy variables for categorical)
-source('scaling_function.R')
 
-## load UVC benthic data (can be provided by request to the authors)
+
+## function to scale and center continuous predictors (and dummy variables for categorical)
+source('scripts/scaling_function.R')
+
+## load UVC benthic data (not uploaded - can be provided by request to the authors)
 load('data/SC_site.Rdata') ## dataframe is 'focal'
 
 ## ------- ------- ------- ------- ------- ------- ------- ##
@@ -17,7 +19,6 @@ load('data/SC_site.Rdata') ## dataframe is 'focal'
 
 ## scale exp params
 scaled<-scaler(focal, ID = c('state', 'location', 'cover', 'year', 'availsubstrate'))
-scaled$cover<-round(scaled$cover, 0)
 
 ## change 0s to 1% cover for distribution fitting (this is 2 replicates in 2005)
 scaled$cover[scaled$cover==0]<-1
@@ -236,12 +237,12 @@ ggplot(site.preds4, aes(year, pcover)) +
 waic<-compare(m1, m2, m3, m4)
 waic<-waic@output
 
-write.csv(data.frame(waic), 'results/waic_logistic_compare.csv')
+write.csv(data.frame(waic), 'data/waic_logistic_compare.csv')
 
 
 ## save top model
 rec.trajectory.m<-m4
-save(rec.trajectory.m, file='results/recovery_year_model.Rdata')
+save(rec.trajectory.m, file='data/recovery_year_model.Rdata')
 
 
 dev.off()

@@ -7,7 +7,7 @@ library(here)
 
 setwd(here())
 
-source('scaling_function.R')
+source('scripts/scaling_function.R')
 
 
 ## ------- ------- ------- ------- ------- ------- ------- ##
