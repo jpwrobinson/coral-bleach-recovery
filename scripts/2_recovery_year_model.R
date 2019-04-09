@@ -1,5 +1,4 @@
 #!/bin/env Rscript
-rm(list=ls())
 
 
 library(rethinking)
@@ -39,7 +38,7 @@ m <- map2stan(
 	    	  ratee*Init_complex +
 	    	  ratef*Init_totalcoral + 
 	    	  rateg*Wave_exposure_joules + 
-	    	  rateh*Nutrients_CN_ratio +
+	    	  rateh*N_percent +
 	    	  ratej*Manage,
 
 	    ## fixed priors for exp. covariates

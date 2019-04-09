@@ -11,7 +11,7 @@ install.packages(c("tidyverse", "rethinking", "here"))
 
 * `recovery_year_model.Rdata` contains model structure (*rec.year.m*) and parameter effect sizes (*rec.params*) for predicting recovery year
 * `recovery_trajectory.Rdata` contains logistic model strucutre (*rec.trajectory.m*), predicted recovery years (*base*) and recovery trajectory for each reef over 100 years (*rec.trajectory*)
-* `posterior_sims.Rdata` contains posterior samples for each recovery year predictor covariate (*depth, complex, init_cover, wave, herb, coral_juv, nutrient*)
+* `posterior_sims.Rdata` contains posterior samples for each recovery year predictor covariate (*depth, complex, init_cover, wave, herb, coral_juv, nitrogen*)
 * `jacknife/` contains model structures and posterior samples for jacknife sensitivity analysis
 
 **figures**
