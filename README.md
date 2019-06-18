@@ -1,5 +1,5 @@
 # coral-bleach-recovery
-This repository contains R code for the Bayesian models accompanying Robinson, Wilson and Graham study on coral recovery following mass bleaching.
+This repository contains R code for the Bayesian models accompanying Robinson, Wilson and Graham "**Abiotic and biotic controls on coral recovery 16 years after mass bleaching**", Coral Reefs 2019.
 
 [https://link.springer.com/article/10.1007/s00338-019-01831-7](https://link.springer.com/article/10.1007/s00338-019-01831-7)
 
